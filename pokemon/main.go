@@ -30,15 +30,10 @@ var (
 )
 
 func main() {
-
-	fmt.Println("Available Pokémon:")
-	for _, pokemon := range pokemons {
-		fmt.Printf("ID: %d, Name: %s, Type: %s, Catch Rate: %d%%, Is Rare: %t, Registered Date: %s\n",
-			pokemon.ID, pokemon.Name, pokemon.Type, pokemon.CatchRate, pokemon.IsRare, pokemon.RegisteredDate.Format(time.RFC1123))
-	}
+	displayPokemons(pokemons)
 
 	maxAttempt := 10
-	var ids []int
+	var selectedPokemons []*model.Pokemon
 	
 	attempt := 0;
 	for attempt < maxAttempt {
@@ -46,51 +41,51 @@ func main() {
 		
 		fmt.Print("> Enter Pokémon ID to attempt to catch: ")
 		n, err := fmt.Scan(&id)
-		if err != nil {
+		if err != nil {			
 			fmt.Printf("%s, please try again\n\n", err)
 			continue
 		}
 
 		if n == 1 {
-			if !pokemonExists(id, pokemons) {
-				fmt.Printf("pokemon with ID %d does not exist, please try again\n\n", id)
+			pokemon, err := pokemonExists(id, pokemons) 
+			if err != nil {
+				fmt.Printf("%s, please try again\n\n", err)
 				continue
 			}
-			ids = append(ids, id)
+			selectedPokemons = append(selectedPokemons, pokemon)
 		}
 
 		attempt++
 	}
 
-	var selectedPokemons []*model.Pokemon
+	catchPokemons(selectedPokemons)
+}
 
-	for _, id := range ids {
-		for _, pokemon := range pokemons {
-			if pokemon.ID == id {
-				selectedPokemons = append(selectedPokemons, &pokemon)
-				break
-			}
-		}
+func displayPokemons(pokemons []model.Pokemon) {
+	fmt.Println("\nAvailable Pokémon:")
+	for _, pokemon := range pokemons {
+		fmt.Printf("ID: %d, Name: %s, Type: %s, Catch Rate: %d%%, Is Rare: %t, Registered Date: %s\n",
+			pokemon.ID, pokemon.Name, pokemon.Type, pokemon.CatchRate, pokemon.IsRare, pokemon.RegisteredDate.Format(time.RFC1123))
 	}
+	fmt.Println()
+}
 
-	for _, selectedPokemon := range selectedPokemons {
-		if selectedPokemon != nil {
-			result := catchProbability(selectedPokemon.CatchRate)
-			fmt.Printf("You attempted to catch %s (%s type) with a catch rate of %d%%: %s\n",
-				selectedPokemon.Name, selectedPokemon.Type, selectedPokemon.CatchRate, result)
-		} else {
-			fmt.Println("Invalid Pokémon ID. Please try again.")
-		}
+func catchPokemons(pokemons []*model.Pokemon) {
+	fmt.Println()
+	for _, pokemon := range pokemons {
+		result := catchProbability(pokemon.CatchRate)
+		fmt.Printf("You attempted to catch %s (%s type) with a catch rate of %d%%: %s\n",
+			pokemon.Name, pokemon.Type, pokemon.CatchRate, result)
 	}
 }
 
-func pokemonExists(id int, pokemons []model.Pokemon) bool {
+func pokemonExists(id int, pokemons []model.Pokemon) (*model.Pokemon, error) {
 	for _, pokemon := range pokemons {
 		if id == pokemon.ID {
-			return true
+			return &pokemon, nil
 		}
 	}
-	return false
+	return nil, fmt.Errorf("pokemon with ID %d does not exist", id)
 }
 
 // catchProbability checks if catching is successful given a percentage rate
@@ -105,5 +100,6 @@ func catchProbability(rate int) string {
 	if chance <= rate {
 		return "SUCCESS, you caught it"
 	}
+
 	return "FAIL, it got away"
 }
