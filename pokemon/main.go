@@ -33,6 +33,15 @@ func main() {
 		{ID: 3, Name: "Bulbasaur", Type: "Grass/Poison", CatchRate: 10, IsRare: true, RegisteredDate: now.AddDate(0, -6, 0)},
 		{ID: 4, Name: "Dragonite", Type: "Dragon/Flying", CatchRate: 30, IsRare: true, RegisteredDate: now.AddDate(0, -8, 0)},
 		{ID: 5, Name: "Mew", Type: "Psychic", CatchRate: 1, IsRare: true, RegisteredDate: now.AddDate(0, -10, 0)},
+		{ID: 6, Name: "Raymond", Type: "Electric", CatchRate: 80, IsRare: false, RegisteredDate: now.AddDate(0, -1, 0)},
+		{ID: 7, Name: "Didi", Type: "Fire", CatchRate: 50, IsRare: true, RegisteredDate: now.AddDate(0, -5, 0)},
+		{ID: 8, Name: "Niko", Type: "Grass/Poison", CatchRate: 70, IsRare: false, RegisteredDate: now.AddDate(0, -8, 0)},
+		{ID: 9, Name: "Bene", Type: "Dragon/Flying", CatchRate: 30, IsRare: true, RegisteredDate: now.AddDate(0, -6, 0)},
+		{ID: 10, Name: "Aril", Type: "Electric", CatchRate: 40, IsRare: true, RegisteredDate: now.AddDate(0, -2, 0)},
+		{ID: 11, Name: "Agung", Type: "Fire", CatchRate: 60, IsRare: false, RegisteredDate: now.AddDate(0, -7, 0)},
+		{ID: 12, Name: "Ahmad", Type: "Grass/Poison", CatchRate: 70, IsRare: false, RegisteredDate: now.AddDate(0, -3, 0)},
+		{ID: 13, Name: "Daniel", Type: "Dragon/Flying", CatchRate: 90, IsRare: false, RegisteredDate: now.AddDate(0, -1, 0)},
+		{ID: 14, Name: "Qowi", Type: "Electric", CatchRate: 60, IsRare: false, RegisteredDate: now.AddDate(0, -5, 0)},
 	}
 
 	fmt.Println("Available Pokémon:")
@@ -41,23 +50,44 @@ func main() {
 			pokemon.ID, pokemon.Name, pokemon.Type, pokemon.CatchRate, pokemon.IsRare, pokemon.RegisteredDate.Format(time.RFC1123))
 	}
 
-	var id int
-	fmt.Print("Enter Pokémon ID to attempt to catch: ")
-	fmt.Scan(&id)
+	maxAttempt := 10
+	var ids []int
+	
+	attempt := 0;
+	for attempt < maxAttempt {
+		var id int
+		
+		fmt.Print("Enter Pokémon ID to attempt to catch: ")
+		n, err := fmt.Scan(&id)
+		if err != nil {
+			fmt.Printf("err: %s\n", err)
+			continue
+		}
 
-	var selectedPokemon *model.Pokemon
-	for _, pokemon := range pokemons {
-		if pokemon.ID == id {
-			selectedPokemon = &pokemon
-			break
+		if n == 1 {
+			ids = append(ids, id)
+		}
+		attempt++
+	}
+
+	var selectedPokemons []*model.Pokemon
+
+	for _, id := range ids {
+		for _, pokemon := range pokemons {
+			if pokemon.ID == id {
+				selectedPokemons = append(selectedPokemons, &pokemon)
+				break
+			}
 		}
 	}
 
-	if selectedPokemon != nil {
-		result := catchProbability(selectedPokemon.CatchRate)
-		fmt.Printf("You attempted to catch %s (%s type) with a catch rate of %d%%: %s\n",
-			selectedPokemon.Name, selectedPokemon.Type, selectedPokemon.CatchRate, result)
-	} else {
-		fmt.Println("Invalid Pokémon ID. Please try again.")
+	for _, selectedPokemon := range selectedPokemons {
+		if selectedPokemon != nil {
+			result := catchProbability(selectedPokemon.CatchRate)
+			fmt.Printf("You attempted to catch %s (%s type) with a catch rate of %d%%: %s\n",
+				selectedPokemon.Name, selectedPokemon.Type, selectedPokemon.CatchRate, result)
+		} else {
+			fmt.Println("Invalid Pokémon ID. Please try again.")
+		}
 	}
 }
