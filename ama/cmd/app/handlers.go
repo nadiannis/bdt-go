@@ -25,7 +25,7 @@ func (app *application) getAllEmployees(parts []string) {
 	}
 
 	for _, employee := range employees {
-		statusText := utils.BooleanToStatusText(employee.IsPresent)
+		statusText := utils.BoolToStatusDisplayText(employee.IsPresent)
 		fmt.Printf("**** %s with ID '%s' is %s\n", employee.Name, employee.ID, statusText)
 	}
 }
@@ -51,7 +51,7 @@ func (app *application) addEmployee(parts []string) {
 
 	for {
 		presenceStatus := utils.GetInput(app.scanner, ">> Is the employee present? [y/n] (default: n) ")
-		isPresent, err = utils.StatusTextToBoolean(presenceStatus)
+		isPresent, err = utils.StatusInputTextToBool(presenceStatus)
 		if err != nil {
 			fmt.Println(err)
 			continue
@@ -65,7 +65,7 @@ func (app *application) addEmployee(parts []string) {
 		IsPresent: isPresent,
 	}
 	savedEmployee := app.models.Employees.Add(employee)
-	statusText := utils.BooleanToStatusText(savedEmployee.IsPresent)
+	statusText := utils.BoolToStatusDisplayText(savedEmployee.IsPresent)
 	fmt.Printf("('%s' is saved with ID '%s' & presence status '%s')\n", savedEmployee.Name, employee.ID, statusText)
 }
 
@@ -78,7 +78,7 @@ func (app *application) updateEmployeeStatus(parts []string) {
 	employeeID := parts[1]
 	presenceStatus := parts[2]
 
-	isPresent, err := utils.StatusTextToBoolean(presenceStatus)
+	isPresent, err := utils.StatusInputTextToBool(presenceStatus)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -90,7 +90,7 @@ func (app *application) updateEmployeeStatus(parts []string) {
 		return
 	}
 
-	statusText := utils.BooleanToStatusText(updatedEmployee.IsPresent)
+	statusText := utils.BoolToStatusDisplayText(updatedEmployee.IsPresent)
 	fmt.Printf("(presence status of '%s' is updated to '%s')\n", updatedEmployee.Name, statusText)
 }
 

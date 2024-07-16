@@ -13,14 +13,14 @@ func GetInput(scanner *bufio.Scanner, prompt string) string {
 	return strings.TrimSpace(scanner.Text())
 }
 
-func BooleanToStatusText(isPresent bool) string {
+func BoolToStatusDisplayText(isPresent bool) string {
 	if isPresent {
 		return "present"
 	}
 	return "absent"
 }
 
-func StatusTextToBoolean(presenceStatus string) (bool, error) {
+func StatusInputTextToBool(presenceStatus string) (bool, error) {
 	if strings.ToLower(presenceStatus) == "y" {
 		return true, nil
 	} else if strings.ToLower(presenceStatus) == "n" || presenceStatus == "" {

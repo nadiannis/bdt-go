@@ -17,7 +17,7 @@ type application struct {
 func main() {
 	app := application{
 		scanner: bufio.NewScanner(os.Stdin),
-		models:  *data.NewModels(),
+		models:  data.NewModels(),
 	}
 
 	fmt.Println(`=============================== ATTENDANCE MANAGER ===============================`)
