@@ -59,7 +59,7 @@ func (app *application) addEmployee(parts []string) {
 		break
 	}
 
-	employee := data.Employee{
+	employee := &data.Employee{
 		ID:        uuid.NewString(),
 		Name:      name,
 		IsPresent: isPresent,
