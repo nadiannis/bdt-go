@@ -18,8 +18,9 @@ func (m *EmployeeModel) GetAll() []Employee {
 	return employees
 }
 
-func (m *EmployeeModel) Add(employee Employee) {
+func (m *EmployeeModel) Add(employee Employee) Employee {
 	m.DB[employee.ID] = employee
+	return employee
 }
 
 func (m *EmployeeModel) UpdatePresenceStatus(employeeID string, isPresent bool) error {

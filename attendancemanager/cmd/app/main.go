@@ -2,19 +2,33 @@ package main
 
 import (
 	"attendancemanager/internal/data"
+	"attendancemanager/internal/utils"
+	"bufio"
 	"fmt"
+	"os"
+	"strings"
 
 	"github.com/google/uuid"
 )
 
 type application struct {
-	models data.Models
+	scanner *bufio.Scanner
+	models  data.Models
 }
 
 func main() {
 	app := application{
-		models: *data.NewModels(),
+		scanner: bufio.NewScanner(os.Stdin),
+		models:  *data.NewModels(),
 	}
+
+	fmt.Println("======== ATTENDANCE MANAGER ========")
+	fmt.Println("Choose options:")
+	fmt.Println(`\l => Get list of employees`)
+	fmt.Println(`\a => Add a new employee`)
+	fmt.Println(`\u [employee-id] [presence-status] => Update employee presence status`)
+	fmt.Println(`\d [employee-id] => Delete an employee`)
+	fmt.Println(`\q => Quit`)
 
 	employee1 := data.Employee{
 		ID:        uuid.NewString(),
@@ -27,21 +41,31 @@ func main() {
 	}
 
 	app.models.Employees.Add(employee1)
-	fmt.Println(app.models.Employees.GetAll())
 	app.models.Employees.Add(employee2)
-	fmt.Println(app.models.Employees.GetAll())
 
-	err := app.models.Employees.UpdatePresenceStatus(employee1.ID, false)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Println(app.models.Employees.GetAll())
+	for {
+		input := utils.GetInput(app.scanner, "> ")
+		if input == "" {
+			fmt.Println("input is required")
+			continue
+		}
 
-	err = app.models.Employees.DeleteByID(employee2.ID)
-	if err != nil {
-		fmt.Println(err)
-		return
+		parts := strings.Fields(input)
+		action := parts[0]
+
+		switch action {
+		case `\l`:
+			app.getAllEmployees()
+		case `\a`:
+			app.addEmployee()
+		case `\u`:
+			fmt.Println("upd")
+		case `\d`:
+			fmt.Println("del")
+		case `\q`:
+			return
+		default:
+			fmt.Println("Action should be 'list', 'add', 'upd', 'del', or 'quit'")
+		}
 	}
-	fmt.Println(app.models.Employees.GetAll())
 }
