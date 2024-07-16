@@ -1,5 +1,3 @@
-# AMA
-
 <div align="center">
   <br>
   <h1>AMA</h1>
