@@ -1,8 +1,8 @@
 package main
 
 import (
-	"attendancemanager/internal/data"
-	"attendancemanager/internal/utils"
+	"ama/internal/data"
+	"ama/internal/utils"
 	"bufio"
 	"fmt"
 	"os"

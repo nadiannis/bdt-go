@@ -1,4 +1,4 @@
-module attendancemanager
+module ama
 
 go 1.22.1
 
