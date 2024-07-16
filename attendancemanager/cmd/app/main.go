@@ -7,8 +7,6 @@ import (
 	"fmt"
 	"os"
 	"strings"
-
-	"github.com/google/uuid"
 )
 
 type application struct {
@@ -22,29 +20,11 @@ func main() {
 		models:  *data.NewModels(),
 	}
 
-	fmt.Println("======== ATTENDANCE MANAGER ========")
-	fmt.Println("Choose options:")
-	fmt.Println(`\l => Get list of employees`)
-	fmt.Println(`\a => Add a new employee`)
-	fmt.Println(`\u [employee-id] [presence-status] => Update employee presence status`)
-	fmt.Println(`\d [employee-id] => Delete an employee`)
-	fmt.Println(`\q => Quit`)
-
-	employee1 := data.Employee{
-		ID:        uuid.NewString(),
-		Name:      "Nadia",
-		IsPresent: true,
-	}
-	employee2 := data.Employee{
-		ID:   uuid.NewString(),
-		Name: "Neyla",
-	}
-
-	app.models.Employees.Add(employee1)
-	app.models.Employees.Add(employee2)
+	fmt.Println(`=============================== ATTENDANCE MANAGER ===============================`)
+	displayCommands()
 
 	for {
-		input := utils.GetInput(app.scanner, "> ")
+		input := utils.GetInput(app.scanner, "\n> ")
 		if input == "" {
 			fmt.Println("input is required")
 			continue
@@ -55,17 +35,35 @@ func main() {
 
 		switch action {
 		case `\l`:
-			app.getAllEmployees()
+			app.getAllEmployees(parts)
 		case `\a`:
-			app.addEmployee()
+			app.addEmployee(parts)
 		case `\u`:
-			fmt.Println("upd")
+			app.updateEmployeeStatus(parts)
 		case `\d`:
-			fmt.Println("del")
+			app.deleteEmployee(parts)
+		case `\c`:
+			if len(parts) != 1 {
+				fmt.Println(`input should be \a`)
+				continue
+			}
+			displayCommands()
 		case `\q`:
+			fmt.Println("bye!")
 			return
 		default:
-			fmt.Println("Action should be 'list', 'add', 'upd', 'del', or 'quit'")
+			fmt.Println(`action should be '\l', '\a', '\u', '\d', '\c', or '\q'`)
 		}
 	}
+}
+
+func displayCommands() {
+	fmt.Println(`
+	Commands:
+	\l                              => Get list of employees
+	\a                              => Add a new employee
+	\u [employee-id] [status (y/n)] => Update employee presence status
+	\d [employee-id]                => Delete an employee
+	\c                              => Show all commands
+	\q                              => Quit`)
 }

@@ -3,7 +3,7 @@ package data
 import "errors"
 
 var (
-	ErrRecordNotFound = errors.New("record not found")
+	ErrEmployeeNotFound = errors.New("employee not found")
 )
 
 type Models struct {
