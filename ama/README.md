@@ -37,7 +37,7 @@
 - Start the app.
 
   ```bash
-  go run ./cmd/app
+  go run ./cmd/cli
   ```
 
 - Enter a command.
@@ -82,14 +82,14 @@
 
 ## Screenshots
 
-### Show list of employees & add a new employee
+### Get list of employees presence data & add new employee presence data
 
 ![list & add](./docs/img/list-add.png)
 
-### Update presence status
+### Update employee presence status
 
 ![update](./docs/img/update.png)
 
-### Delete an employee
+### Delete employee presence data
 
 ![delete](./docs/img/delete.png)
