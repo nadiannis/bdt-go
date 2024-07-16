@@ -44,13 +44,40 @@
 
   Choose one of these commands:
 
+  **Get list of employees**
+
   ```bash
-  \l                              => Get list of employees
-  \a                              => Add a new employee
-  \u [employee-id] [status (y/n)] => Update employee presence status
-  \d [employee-id]                => Delete an employee
-  \c                              => Show all commands
-  \q                              => Quit
+  \l
+  ```
+
+  **Add a new employee**
+
+  ```bash
+  \a
+  ```
+
+  **Update employee presence status**
+
+  ```bash
+  \u [employee-id] [status (y/n)]
+  ```
+
+  **Delete an employee**
+
+  ```bash
+  \d [employee-id]
+  ```
+
+  **Show all commands**
+
+  ```bash
+  \c
+  ```
+
+  **Quit the app**
+
+  ```bash
+  \q
   ```
 
 ## Screenshots
