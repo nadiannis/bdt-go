@@ -60,10 +60,10 @@ func main() {
 func displayCommands() {
 	fmt.Println(`
 	Commands:
-	\l                              => Get list of employees
-	\a                              => Add a new employee
+	\l                              => Get list of employees presence data
+	\a                              => Add new employee presence data
 	\u [employee-id] [status (y/n)] => Update employee presence status
-	\d [employee-id]                => Delete an employee
+	\d [employee-id]                => Delete employee presence data
 	\c                              => Show all commands
 	\q                              => Quit`)
 }

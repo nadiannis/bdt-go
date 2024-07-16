@@ -4,6 +4,7 @@ import (
 	"ama/internal/data"
 	"ama/internal/utils"
 	"fmt"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -26,7 +27,8 @@ func (app *application) getAllEmployees(parts []string) {
 
 	for _, employee := range employees {
 		statusText := utils.BoolToStatusDisplayText(employee.IsPresent)
-		fmt.Printf("**** %s with ID '%s' is %s\n", employee.Name, employee.ID, statusText)
+		fmt.Printf("**** %s's attendance with ID '%s' has a status of '%s' on %s\n",
+			employee.Name, employee.ID, statusText, utils.FormatDate(employee.CreatedAt))
 	}
 }
 
@@ -63,10 +65,12 @@ func (app *application) addEmployee(parts []string) {
 		ID:        uuid.NewString(),
 		Name:      name,
 		IsPresent: isPresent,
+		CreatedAt: time.Now(),
 	}
 	savedEmployee := app.models.Employees.Add(employee)
 	statusText := utils.BoolToStatusDisplayText(savedEmployee.IsPresent)
-	fmt.Printf("('%s' is saved with ID '%s' & presence status '%s')\n", savedEmployee.Name, employee.ID, statusText)
+	fmt.Printf("(%s's attendance is saved with ID '%s' & status '%s' on %s)\n",
+		savedEmployee.Name, employee.ID, statusText, utils.FormatDate(employee.CreatedAt))
 }
 
 func (app *application) updateEmployeeStatus(parts []string) {
@@ -91,7 +95,8 @@ func (app *application) updateEmployeeStatus(parts []string) {
 	}
 
 	statusText := utils.BoolToStatusDisplayText(updatedEmployee.IsPresent)
-	fmt.Printf("(presence status of '%s' is updated to '%s')\n", updatedEmployee.Name, statusText)
+	fmt.Printf("(presence status of '%s' on %s is updated to '%s')\n",
+		updatedEmployee.Name, utils.FormatDate(updatedEmployee.CreatedAt), statusText)
 }
 
 func (app *application) deleteEmployee(parts []string) {
@@ -108,5 +113,5 @@ func (app *application) deleteEmployee(parts []string) {
 		return
 	}
 
-	fmt.Printf("(employee with ID '%s' is deleted)\n", employeeID)
+	fmt.Printf("(attendance data with ID '%s' is deleted)\n", employeeID)
 }

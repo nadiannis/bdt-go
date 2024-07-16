@@ -1,9 +1,12 @@
 package data
 
+import "time"
+
 type Employee struct {
 	ID        string
 	Name      string
 	IsPresent bool
+	CreatedAt time.Time
 }
 
 type EmployeeModel struct {
