@@ -16,7 +16,7 @@
 
 [`^ back to top ^`](#table-of-contents)
 
-**AMA** is a simple CLI app to manage employee attendance. The app is made with Go. It is created for the final project in the Go phase of the Backend Development Training.
+**AMA** is a simple CLI app to manage employee attendance. The app is made with Go. It is created as an exercise in the Go phase of the Backend Development Training.
 
 ## Minimum Requirements
 
