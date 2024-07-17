@@ -44,7 +44,7 @@ func main() {
 			app.deleteEmployee(parts)
 		case `\c`:
 			if len(parts) != 1 {
-				fmt.Println(`input should be \a`)
+				fmt.Println(`input should be \c`)
 				continue
 			}
 			displayCommands()
