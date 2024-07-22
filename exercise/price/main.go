@@ -29,7 +29,7 @@ func main() {
 		fmt.Println("invalid product quantity")
 		return
 	}
-	
+
 	input = getInput(scanner, "> Is there any discount [y/n]: ")
 	discount, err = discountInputTextToBool(input)
 	if err != nil {

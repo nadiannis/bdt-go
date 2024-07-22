@@ -23,7 +23,7 @@ func main() {
 		fmt.Println("Angka hanya bisa berupa teks dari 'satu' sampai 'sepuluh'")
 	}
 
-	if number % 2 == 0 {
+	if number%2 == 0 {
 		fmt.Printf("%s (%d) adalah bilang genap\n", text, number)
 	} else {
 		fmt.Printf("%s (%d) adalah bilang ganjil\n", text, number)

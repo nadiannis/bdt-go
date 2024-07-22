@@ -10,7 +10,7 @@ import (
 
 // Create sample Pokemon
 var (
-	now = time.Now()
+	now      = time.Now()
 	pokemons = []model.Pokemon{
 		{ID: 1, Name: "Pikachu", Type: "Electric", CatchRate: 70, IsRare: false, RegisteredDate: now},
 		{ID: 2, Name: "Charmander", Type: "Fire", CatchRate: 40, IsRare: true, RegisteredDate: now.AddDate(0, -1, 0)},
@@ -34,20 +34,20 @@ func main() {
 
 	maxAttempt := 10
 	var selectedPokemons []*model.Pokemon
-	
-	attempt := 0;
+
+	attempt := 0
 	for attempt < maxAttempt {
 		var id int
-		
+
 		fmt.Print("> Enter Pokémon ID to attempt to catch: ")
 		n, err := fmt.Scan(&id)
-		if err != nil {			
+		if err != nil {
 			fmt.Printf("%s, please try again\n\n", err)
 			continue
 		}
 
 		if n == 1 {
-			pokemon, err := pokemonExists(id, pokemons) 
+			pokemon, err := pokemonExists(id, pokemons)
 			if err != nil {
 				fmt.Printf("%s, please try again\n\n", err)
 				continue
