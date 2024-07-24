@@ -12,7 +12,7 @@ import (
 
 func main() {
 	fmt.Println("CPU cores:", runtime.NumCPU())
-	runtime.GOMAXPROCS(2)
+	runtime.GOMAXPROCS(4)
 
 	repo := repository.NewBalanceRepository()
 
@@ -27,26 +27,18 @@ func main() {
 
 	fmt.Println("(simulating concurrent withdrawals)")
 	for i := 0; i < operations; i++ {
-		go func(index int) {
+		go func() {
 			defer wg.Done()
 
 			err := repo.WithdrawAmount(balance.ID, 10000)
 			if err != nil {
 				fmt.Println("withdraw error:", err)
 			}
-
-			b, _ := repo.GetByID(balance.ID)
-			showBalance(b, index)
-		}(i)
+		}()
 	}
 
 	wg.Wait()
 
 	fmt.Println("(expected balance: 500000.00)")
 	fmt.Printf("(final balance: %.2f)\n", balance.Amount)
-}
-
-func showBalance(balance *domain.Balance, index int) {
-	fmt.Printf("withdraw-%d id:%s | username: %s | amount: %.2f\n",
-		(index + 1), balance.ID, balance.Username, balance.Amount)
 }

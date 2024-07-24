@@ -3,6 +3,7 @@ package repository
 import (
 	"bankapp/internal/domain"
 	"bankapp/internal/utils"
+	"fmt"
 	"sync"
 	"time"
 )
@@ -57,5 +58,7 @@ func (r *BalanceRepository) WithdrawAmount(balanceID string, amount float64) err
 	time.Sleep(time.Millisecond * 5)
 
 	balance.Amount -= amount
+
+	fmt.Printf("withdraw id:%s | username: %s | amount: %.2f\n", balance.ID, balance.Username, balance.Amount)
 	return nil
 }
