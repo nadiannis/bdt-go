@@ -2,6 +2,10 @@
 
 A collection of code created during the Go phase of Backend Development Training.
 
+## Notes
+
+Notes about Go: [Go Notes](https://nadiannis-base.gitbook.io/go-notes)
+
 ## Mini Projects
 
 - **Pokemon CLI app**: [Pokemon](./pokemon)
