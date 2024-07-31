@@ -5,8 +5,13 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strconv"
+
+	"github.com/google/uuid"
 )
+
+const MAX_UPLOAD_SIZE = 1024 * 1024
 
 func main() {
 	http.HandleFunc("GET /", homeView)
@@ -81,7 +86,7 @@ func fileUpload(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create a new file in the 'uploads' folder
-	dst, err := os.Create(fmt.Sprintf("./uploads/%s", fileHeader.Filename))
+	dst, err := os.Create(fmt.Sprintf("./uploads/%s%s", uuid.NewString(), filepath.Ext(fileHeader.Filename)))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -100,16 +105,12 @@ func fileUpload(w http.ResponseWriter, r *http.Request) {
 func fileDownload(w http.ResponseWriter, r *http.Request) {
 	filename := r.FormValue("myFile")
 
-	fmt.Println(filename)
-
 	file, err := os.Open(fmt.Sprintf("./uploads/%s", filename))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	}
 	defer file.Close()
-
-	fmt.Println(file)
 
 	tempBuffer := make([]byte, 512)
 	file.Read(tempBuffer)
